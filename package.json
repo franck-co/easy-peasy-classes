@@ -1,0 +1,45 @@
+{
+  "name": "easy-peasy-classes",
+  "version": "0.0.1",
+  "description": "a way to write easy-peasy models with classes and typescript decorators for deeply nested store stuctures",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "easy-peasy",
+    "typescript",
+    "decorators",
+    "nested"
+  ],
+  "scripts": {
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build",
+    "publish": "npm publish"
+  },
+  "peerDependencies": {
+    "easy-peasy": ">= 3"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.9.0",
+    "@types/lodash": "^4.14.171",
+    "easy-peasy": "^3.2.6",
+    "husky": "^4.0.10",
+    "jest": "^24.9.0",
+    "react": "^16.12.0",
+    "ts-jest": "^24.3.0",
+    "tsdx": "^0.12.3",
+    "tslib": "^1.10.0",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.7.5"
+  },
+  "author": "franck-co",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^4.17.21"
+  }
+}
