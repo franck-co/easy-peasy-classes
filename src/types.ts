@@ -12,10 +12,10 @@ export type ToStoreType<T extends object> = {
                 ? Action<T, Parameters<T[P]>[0] extends undefined ? void : Parameters<T[P]>[0]> & Function
                 : Thunk<T, Parameters<T[P]>[0], void, {}, ReturnType<T[P]>> & Function
 
-            : T[P] extends Action
-                ? T[P] & Function
-                : T[P] extends Thunk 
-                    ? T[P] & Function
+            // : T[P] extends Action
+            //     ? T[P] & Function
+            //     : T[P] extends Thunk 
+            //         ? T[P] & Function
                     : T[P] extends object 
                         ? ToStoreType<T[P]>
                         : T[P]
