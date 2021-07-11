@@ -13,10 +13,10 @@ export abstract class ModelBasePure {
     }
 }
 
-@Model()
+@Model
 export abstract class ModelBase extends ModelBasePure{
 
-    @Property()
+    @Property
     private _isHoldingChildren: boolean = false
 }
 

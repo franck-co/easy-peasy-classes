@@ -7,11 +7,11 @@ import { ModelBase } from "../src/base-class";
 
 describe("metadata", () => {
     it("collects property metadata", () => {
-        @Model()
+        @Model
         class StoreModel extends ModelBase{
             public notAProperty = 1;
 
-            @Property()
+            @Property
             public property = 2;
         }
 

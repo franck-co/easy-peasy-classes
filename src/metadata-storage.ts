@@ -5,12 +5,10 @@ import {cloneDeep, merge} from 'lodash'
 
 interface IModelMetadata {
     ctor: any;
-    modelName: string;
 }
 
 interface IModelDefinition{
     proto: any;
-    modelName: string;
 }
 
 interface IPropertyMetadata {
@@ -38,8 +36,7 @@ interface IModelInstance {
 }
 
 export class MetadataStorage {
-    private model: Record<string, Record<string, any>> = {};
-    private models: IModelDefinition[] = [];
+    private def: IModelDefinition = {} as IModelDefinition;
     private properties: IPropertyMetadata[] = [];
     private children: IChildMetadata[] = [];
     private actions: IActionMetadata[] = [];
@@ -51,7 +48,7 @@ export class MetadataStorage {
     public _isHoldingChildren:boolean = false
 
     public addModelMetadata(definition: IModelMetadata) {
-        this.models.push({ proto: definition.ctor.prototype, modelName: definition.modelName });
+        this.def = { proto: definition.ctor.prototype };
         this.instances.push({ proto: definition.ctor.prototype, instance: new definition.ctor() });
     }
 
@@ -79,11 +76,14 @@ export class MetadataStorage {
         this.thunks.push(definition);
     }
 
-    public buildModel(withModelName=false) {
-        this.models.forEach(({ proto, modelName }) => {
+    public buildModel() {
+
+        const model:Record<string, Record<string, any>> = {};
+
+        const { proto } = this.def
             
         
-            this.model[modelName] = {};
+            
 
             this.properties
                 .filter(p => p.proto === proto)
@@ -91,7 +91,7 @@ export class MetadataStorage {
                     const instance = this.instances.find(i => i.proto === p.proto);
                     const  initialValue = instance?.instance[p.fieldName];
 
-                    this.model[modelName][p.fieldName] = initialValue;
+                    model[p.fieldName] = initialValue;
                 });
             
             this.children
@@ -101,13 +101,13 @@ export class MetadataStorage {
                     const instance = this.instances.find(i => i.proto === p.proto);
                     const  initialValue = instance?.instance[p.fieldName];
 
-                    this.model[modelName][p.fieldName] = initialValue;
+                    model[p.fieldName] = initialValue;
                 });
 
             this.actions
                 .filter(a => a.proto === proto)
                 .forEach(a => {
-                    this.model[modelName][a.fieldName] = action((state, payload) => {
+                    model[a.fieldName] = action((state, payload) => {
                         try{
                             a.handler.call(state, payload);
                         }catch(err){
@@ -124,7 +124,7 @@ export class MetadataStorage {
             this.computed
                 .filter(c => c.proto === proto)
                 .forEach(c => {
-                    this.model[modelName][c.fieldName] = computed(state => {
+                    model[c.fieldName] = computed(state => {
                         return c.handler.call(state);
                     });
                 });
@@ -132,7 +132,7 @@ export class MetadataStorage {
             this.listeners
                 .filter(l => l.proto === proto)
                 .forEach(l => {
-                    this.model[modelName][l.fieldName] = thunkOn(l.actionFn, (actions, target,{getState,getStoreActions,getStoreState}) => {
+                    model[l.fieldName] = thunkOn(l.actionFn, (actions, target,{getState,getStoreActions,getStoreState}) => {
                         
                         function getStoreStateClone(mapState:any){
                             const selectedState = mapState(getStoreState())
@@ -158,7 +158,7 @@ export class MetadataStorage {
             this.thunks
                 .filter(t => t.proto === proto)
                 .forEach(t => {
-                    this.model[modelName][t.fieldName] = thunk((actions, payload, { getState,getStoreActions,getStoreState }) => {
+                    model[t.fieldName] = thunk((actions, payload, { getState,getStoreActions,getStoreState }) => {
 
                         //As the state is frozen, it not a danger anymore to provide raw state to Thunks
                         //The copied unFrozen state is provided as an utility
@@ -186,12 +186,8 @@ export class MetadataStorage {
                     });
                 });
 
-            if(!withModelName){
-                this.model = this.model[modelName]
-            }
-        });
 
-        return this.model as any;
+        return model as any;
     }
 }
 
@@ -206,29 +202,11 @@ class  MetadataStoragePool {
     }
 
 
-    // getMetadataStorage(key:string | Symbol):MetadataStorage{
-
-    //     //Because typescript type system doesn't support Symbol as index type for arrays
-    //     const tsFixKey = key as unknown as string
-
-    //     return this.pool[tsFixKey] 
-    // }
-
-    
-    // createMetadataStorage(key:string | Symbol):MetadataStorage{
-
-    //     //Because typescript type system doesn't support Symbol as index type for arrays
-    //     const tsFixKey = key as unknown as string
-
-    //     this.pool[tsFixKey] = new MetadataStorage();
-    //     return this.getMetadataStorage(key)
-    // }
-
 
     next(){
         this.currentIndex++
         this.pool[this.currentIndex] = new MetadataStorage();
-        console.log("listning for new decorators (storageIndex : " + this.currentIndex + ")")
+        console.log("waiting for new decorators (storageIndex : " + this.currentIndex + ")")
     }
 
     getCurrentIndex(){
@@ -247,34 +225,3 @@ class  MetadataStoragePool {
 }
 
 export const metaDataStoragePool = new MetadataStoragePool();
-
-
-
-// this.thunks
-// .filter(t => t.proto === proto)
-// .forEach(t => {
-//     this.model[modelName][t.fieldName] = thunk((actions, payload, { getState,getStoreActions,getStoreState }) => {
-
-//         function getStoreState2(mapState){
-//             const selectedState = mapState(getStoreState())
-//             return deepFreeze(cloneDeep(selectedState))
-//         }
-
-//         function getStoreAction2(mapActions){
-//             const selectedActions = mapActions(getStoreActions())
-//             return selectedActions
-//         }
-        
-//         const freezedLocalState = deepFreeze(cloneDeep(getState()))  // produce(getState(),draft=>draft)
-
-//         return t.handler.call({ ...freezedLocalState, ...actions,
-//             getStoreActions: getStoreAction2, //Mix of easy-peay syntax and map syntax
-//             getStoreState:getStoreState2, //Map syntax
-
-//             getStoreActionsRaw:getStoreActions,
-//             getStoreStateRaw:getStoreState,
-//             getStateRaw:getState
-//          }, payload);
-       
-//     });
-// });
