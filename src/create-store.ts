@@ -17,17 +17,17 @@ type freeObj =  {[key:string]:any}
 
 interface createTypedHooksReturn<Model extends object> {
     useStoreActions: <Result>(
-        mapActions: (actions: easyPeasy.Actions<ToStoreType<Model>>) => Result,
+        mapActions: (actions: easyPeasy.Actions<ToStoreType<Model>>) => Result extends ToStoreType<infer R> ? R : Result,
     ) => Result;
     useStoreActionsLoose: <Result extends Function>(
-        mapActions: (actions: easyPeasy.Actions<ToStoreType<Model>> & freeObj) => Result & any,
+        mapActions: (actions: easyPeasy.Actions<ToStoreType<Model>> & freeObj) => (Result extends ToStoreType<infer R> ? R : Result) & any,
     ) => Result;
     useStoreState: <Result>(
-        mapState: (state:  easyPeasy.State<ToStoreType<Model>>) => Result,
+        mapState: (state:  easyPeasy.State<ToStoreType<Model>>) => Result extends ToStoreType<infer R> ? R : Result,
         dependencies?: any[],
     ) => Result;
     useStoreStateLoose: <Result>(
-        mapState: (state: easyPeasy.State<ToStoreType<Model>> & freeObj) => Result,
+        mapState: (state: easyPeasy.State<ToStoreType<Model>> & freeObj) => (Result extends ToStoreType<infer R> ? R : Result),
         dependencies?: any[],
     ) => Result;
     useStoreDispatch: () => easyPeasy.Dispatch<ToStoreType<Model>>;

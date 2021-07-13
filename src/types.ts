@@ -2,6 +2,10 @@ import { Action, Thunk, State, Actions } from 'easy-peasy';
 
 export type ComputedType<T> = T & { computed?: undefined };
 
+
+//Fonctionnel
+//Ajout des call signatures pour Action et Thunk
+//Pas de récursivité
 export type ToStoreType<T extends object> = {
     [P in keyof T]: 'computed' extends keyof T[P]
         ? T[P] extends ComputedType<infer U>
