@@ -7,10 +7,6 @@ export abstract class ModelBasePure {
     static get obj() {
         return {} as any
     }
-
-    static get objWithName() {
-        return {} as any
-    }
 }
 
 @Model()
