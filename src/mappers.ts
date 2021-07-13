@@ -1,12 +1,12 @@
 import { State, Actions } from "easy-peasy";
-import { ToStoreType } from "./types";
+import { ToStoreType, StateOnlyRecursive } from "./types";
 
 type freeObj = {[key:string]:any}
 
 interface getMapperFactoryResult<Model extends object> {
-    useMapper: <Result>(mapFn: (store: ToStoreType<Model>) => Result) => ((store: any /**Must be any */) => Result extends ToStoreType<infer R> ? R : Result);
-    useMapperState: <Result>(mapFn: (store: State<ToStoreType<Model>>) => Result) => ((store: any) => Result extends ToStoreType<infer R> ? R : Result);
-    useMapperActions: <Result>(mapFn: (store: Actions<ToStoreType<Model>>) => Result) => ((store:any) => Result extends ToStoreType<infer R> ? R : Result);
+    useMapper: <Result>(mapFn: (store: ToStoreType<Model>) => Result) => ((store: any /**Must be any */) => Result);
+    useMapperState: <Result>(mapFn: (store: StateOnlyRecursive<ToStoreType<Model>>) => Result) => ((store: any) => Result);
+    useMapperActions: <Result>(mapFn: (store: Actions<ToStoreType<Model>>) => Result) => ((store: any) => Result);
 
     useMapperLoose: <Result>(mapFn: (store: Model & freeObj) => Result  & freeObj) => ((store: Model   & freeObj) => Result  & freeObj );
 }

@@ -44,7 +44,7 @@ export type StateOnlyRecursive<T extends object> = {
 }
 
 export type UnpackToStoreType<Result> = Result extends ToStoreType<infer R> ? R : Result
-export type UnpackStateOnlyRecursive<T> = T extends StateOnlyRecursive<infer U> ? U : T;
+export declare type UnpackStateOnlyRecursive<T> = T extends ToStoreType<infer R> ? R : T extends StateOnlyRecursive<infer U> ? U : T;
 
 
 
