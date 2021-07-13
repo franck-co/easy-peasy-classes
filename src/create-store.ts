@@ -1,5 +1,5 @@
 import * as easyPeasy from "easy-peasy";
-import { ToStoreType } from './types';
+import { StateOnlyRecursive, ToStoreType, UnpackToStoreType, UnpackStateOnlyRecursive } from './types';
 //import { metadataStorage } from "./metadata-storage";
 
 
@@ -15,33 +15,34 @@ type freeObj =  {[key:string]:any}
 
 
 
+
 interface createTypedHooksReturn<Model extends object> {
     useStoreActions: <Result>(
-        mapActions: (actions: easyPeasy.Actions<ToStoreType<Model>>) => Result extends ToStoreType<infer R> ? R : Result,
-    ) => Result;
+        mapActions: (actions: easyPeasy.Actions<ToStoreType<Model>>) => Result,
+    ) => UnpackToStoreType<Result>
     useStoreActionsLoose: <Result extends Function>(
-        mapActions: (actions: easyPeasy.Actions<ToStoreType<Model>> & freeObj) => (Result extends ToStoreType<infer R> ? R : Result) & any,
-    ) => Result;
+        mapActions: (actions: easyPeasy.Actions<ToStoreType<Model>> & freeObj) => Result & any,
+    ) => UnpackToStoreType<Result>
     useStoreState: <Result>(
-        mapState: (state:  easyPeasy.State<ToStoreType<Model>>) => Result extends ToStoreType<infer R> ? R : Result,
+        mapState: (state:  StateOnlyRecursive<ToStoreType<Model>>) => Result,
         dependencies?: any[],
-    ) => Result;
+    ) =>UnpackToStoreType<UnpackStateOnlyRecursive<Result>>
     useStoreStateLoose: <Result>(
-        mapState: (state: easyPeasy.State<ToStoreType<Model>> & freeObj) => (Result extends ToStoreType<infer R> ? R : Result),
+        mapState: (state: StateOnlyRecursive<ToStoreType<Model>> & freeObj) => Result,
         dependencies?: any[],
-    ) => Result;
+    ) => UnpackToStoreType<UnpackStateOnlyRecursive<Result>>
     useStoreDispatch: () => easyPeasy.Dispatch<ToStoreType<Model>>;
 
 }
 
 export type getStoreState_<Model extends object> = <Result>(
-    mapState: (state:  easyPeasy.State<ToStoreType<Model>>) => Result,
+    mapState: (state:  StateOnlyRecursive<ToStoreType<Model>>) => Result,
     dependencies?: any[],
-) => Result;
+) => UnpackToStoreType<UnpackStateOnlyRecursive<Result>>
 
 export type getStoreActions_<Model extends object> = <Result>(
     mapActions: (actions: easyPeasy.Actions<ToStoreType<Model>>) => Result,
-) => Result;
+) => UnpackToStoreType<Result>
 
 export function createTypedHooks<Model extends object>(): createTypedHooksReturn<Model> {
     

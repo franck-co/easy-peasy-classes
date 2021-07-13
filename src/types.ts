@@ -27,7 +27,24 @@ export type ToStoreType<T extends object> = {
 };
 
 
+type FilterFlagsRemove<Base, Condition> = {
+    [Key in keyof Base]:
+    Base[Key] extends Condition ? never : Key
+};
 
+type AllowedNamesRemove<Base, Condition> =
+    FilterFlagsRemove<Base, Condition>[keyof Base];
+
+type SubTypeRemove<Base, Condition> =
+    Pick<Base, AllowedNamesRemove<Base, Condition>>;
+
+type StateOnly1<T extends object> = SubTypeRemove<T,Function>
+export type StateOnlyRecursive<T extends object> = {
+    [P in keyof StateOnly1<T>]: T[P] extends object ? StateOnlyRecursive<T[P]> : T[P]
+}
+
+export type UnpackToStoreType<Result> = Result extends ToStoreType<infer R> ? R : Result
+export type UnpackStateOnlyRecursive<T> = T extends StateOnlyRecursive<infer U> ? U : T;
 
 
 

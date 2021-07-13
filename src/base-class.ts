@@ -1,14 +1,10 @@
 import { Actions, State } from "easy-peasy";
 import { Model, Property } from "./decorators";
-import { ToStoreType} from "./types";
+import { ToStoreType,UnpackToStoreType} from "./types";
 
 
 export abstract class ModelBasePure {
     static get obj() {
-        return {} as any
-    }
-
-    static get objWithName() {
         return {} as any
     }
 }
@@ -22,7 +18,6 @@ export abstract class ModelBase extends ModelBasePure{
 
 
 
-
 type getStoreState<StoreModel extends object> = () => State<ToStoreType<StoreModel>> & { [key: string]: any }
 type getStoreActions<StoreModel extends object> = () => Actions<ToStoreType<StoreModel>> & { [key: string]: any }
 
@@ -30,7 +25,7 @@ interface createTypedHooksReturn<Model extends object> {
     useStoreState: <Result>(
         mapState: (state: State<ToStoreType<Model>>) => Result,
         dependencies?: any[],
-    ) => Result;
+    ) => UnpackToStoreType<Result>;
 }
 
 type getStoreStateClone<StoreModel extends object> = createTypedHooksReturn<StoreModel>['useStoreState']
