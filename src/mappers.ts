@@ -1,24 +1,24 @@
-import { State, Actions } from "easy-peasy";
+import * as easyPeasy from "easy-peasy";
 import { ToStoreType, StateOnlyRecursive } from "./types";
 
 type freeObj = {[key:string]:any}
 
 interface getMapperFactoryResult<Model extends object> {
-    useMapper: <Result>(mapFn: (store: ToStoreType<Model>) => Result) => ((store: any /**Must be any */) => Result);
-    useMapperState: <Result>(mapFn: (store: StateOnlyRecursive<ToStoreType<Model>>) => Result) => ((store: any) => Result);
-    useMapperActions: <Result>(mapFn: (store: Actions<ToStoreType<Model>>) => Result) => ((store: any) => Result);
+    useMapper: <Result>(mapFn: (store: ToStoreType<Model>) => Result) => (<S extends easyPeasy.Actions<ToStoreType<Model>> | easyPeasy.State<ToStoreType<Model>>>(store: S) => Result extends object ? S extends easyPeasy.Actions<ToStoreType<Model>> ? easyPeasy.Actions<Result> : easyPeasy.State<Result> : Result);
+    // useMapperState: <Result>(mapFn: (store: easyPeasy.State<ToStoreType<Model>>) => Result) => ((store: any) => Result);
+    // useMapperActions: <Result>(mapFn: (store: easyPeasy.Actions<ToStoreType<Model>>) => Result) => ((store: any) => Result);
 
-    useMapperLoose: <Result>(mapFn: (store: Model & freeObj) => Result  & freeObj) => ((store: Model   & freeObj) => Result  & freeObj );
+    // useMapperLoose: <Result>(mapFn: (store: Model & freeObj) => Result  & freeObj) => ((store: Model   & freeObj) => Result  & freeObj );
 }
 
 
 export function getMapperFactory<Model extends object>(): getMapperFactoryResult<Model> {
     return {
-        useMapper: undefined,
-        useMapperActions:undefined,
-        useMapperState:undefined,
+        useMapper: (i:any) => i,
+        // useMapperActions:(i:any) => i,
+        // useMapperState:(i:any) => i,
 
-        useMapperLoose :undefined,
+        // useMapperLoose :(i:any) => i,
     } as any;
 }
 
