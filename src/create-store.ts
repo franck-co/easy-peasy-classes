@@ -4,9 +4,9 @@ import {  ToStoreType } from './types';
 
 
 //get better typeping for getState() and getActions()
-export function createStore<T extends object = {}>(storeModel:T) {
+export function createStore<T extends object = {}>(storeModel:T,config?:easyPeasy.EasyPeasyConfig) {
 
-    const store = easyPeasy.createStore<any>(storeModel);
+    const store = easyPeasy.createStore<any>(storeModel,config);
     return store as easyPeasy.Store<ToStoreType<T>>;
     
 }
