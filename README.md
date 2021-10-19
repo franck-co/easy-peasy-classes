@@ -4,7 +4,7 @@ easy-peasy-classes is a simple package that gives you the abiliy to write your e
 easy-peasy-classes is heavily inspired by erencay's easy-peasy-decorators package. The approach slithy differs in order to add some new features.
 
 ## Disclaimer
-This package (and its documentation) is still under development and is not suitable for producion environment
+This package (and its documentation) is still under development and is not suitable for use
 
 ||easy-peasy-classes|easy-peasy-decorators|
 | :--- | :---: | :---: |

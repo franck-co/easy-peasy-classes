@@ -1,7 +1,7 @@
 {
   "name": "easy-peasy-classes",
-  "version": "1.0.8",
-  "description": "a way to write easy-peasy models with classes and typescript decorators for deeply nested store stuctures",
+  "version": "1.0.9",
+  "description": "easy-peasy enhanced with classes, full typescript type safety, nested store stuctures and model inheritance",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "files": [
