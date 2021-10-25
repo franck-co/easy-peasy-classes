@@ -144,7 +144,7 @@ export class MetadataStorage {
                             return cloneDeep(modelState)
                         }
                         
-                        return l.handler.call({ ...getState(), ...actions,
+                        return l.handler.call({ ...merge({},actions,getState()),
                             getStoreActions,
                             getStoreState,
 
