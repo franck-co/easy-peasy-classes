@@ -18,8 +18,8 @@ export abstract class ModelBase extends ModelBasePure{
 
 
 
-type getStoreState<StoreModel extends object> = () => easyPeasy.State<ToStoreType<StoreModel>> & { [key: string]: any }
-type getStoreActions<StoreModel extends object> = () => easyPeasy.Actions<ToStoreType<StoreModel>> & { [key: string]: any }
+type getStoreState<StoreModel extends object> = () => easyPeasy.State<ToStoreType<StoreModel>>// & { [key: string]: any }
+type getStoreActions<StoreModel extends object> = () => easyPeasy.Actions<ToStoreType<StoreModel>>// & { [key: string]: any }
 
 interface createTypedHooksReturn<Model extends object> {
     useStoreState: <Result>(

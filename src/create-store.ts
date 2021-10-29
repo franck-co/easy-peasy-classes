@@ -11,7 +11,7 @@ export function createStore<T extends object = {}>(storeModel:T,config?:easyPeas
     
 }
 
-type freeObj =  {[key:string]:any}
+//type freeObj =  {[key:string]:any}
 
 
 
@@ -20,17 +20,17 @@ interface createTypedHooksReturn<Model extends object> {
     useStoreActions: <Result>(
         mapActions: (actions: easyPeasy.Actions<ToStoreType<Model>>) => Result,
     ) => Result
-    useStoreActionsLoose: <Result extends Function>(
-        mapActions: (actions: easyPeasy.Actions<ToStoreType<Model>> & freeObj) => Result & any,
-    ) => Result
+    // useStoreActionsLoose: <Result extends Function>(
+    //     mapActions: (actions: easyPeasy.Actions<ToStoreType<Model>> & freeObj) => Result & any,
+    // ) => Result
     useStoreState: <Result>(
         mapState: (state:  easyPeasy.State<ToStoreType<Model>>) => Result,
         dependencies?: any[],
     ) =>Result
-    useStoreStateLoose: <Result>(
-        mapState: (state: easyPeasy.State<ToStoreType<Model>> & freeObj) => Result,
-        dependencies?: any[],
-    ) => Result
+    // useStoreStateLoose: <Result>(
+    //     mapState: (state: easyPeasy.State<ToStoreType<Model>> & freeObj) => Result,
+    //     dependencies?: any[],
+    // ) => Result
     useStoreDispatch: () => easyPeasy.Dispatch<ToStoreType<Model>>;
 
 }
@@ -61,9 +61,9 @@ export function createTypedHooks<Model extends object>(): createTypedHooksReturn
 
     return {
         useStoreActions: hooks.useStoreActions,
-        useStoreActionsLoose: hooks.useStoreActions,
+        //useStoreActionsLoose: hooks.useStoreActions,
         useStoreState: secureUseStoreState,
-        useStoreStateLoose: hooks.useStoreState,
+        //useStoreStateLoose: hooks.useStoreState,
         useStoreDispatch:hooks.useStoreDispatch
     } as any;
 }
@@ -116,17 +116,17 @@ interface createLocalTypedHooksReturn<LocalModel extends object> {
     useLocalActions: <Result>(
         mapActions: (actions: easyPeasy.Actions<ToStoreType<LocalModel>>) => Result,
     ) => Result;
-    useLocalActionsLoose: <Result>(
-        mapActions: (actions: easyPeasy.Actions<ToStoreType<LocalModel>> & freeObj) => Result,
-    ) => Result;
+    // useLocalActionsLoose: <Result>(
+    //     mapActions: (actions: easyPeasy.Actions<ToStoreType<LocalModel>> & freeObj) => Result,
+    // ) => Result;
     useLocalState: <Result>(
         mapState?: (state: easyPeasy.State<ToStoreType<LocalModel>>) => Result,
         dependencies?: any[],
     ) => Result;
-    useLocalStateLoose: <Result>(
-        mapState: (state: easyPeasy.State<ToStoreType<LocalModel>> & freeObj) => Result,
-        dependencies?: any[],
-    ) => Result;
+    // useLocalStateLoose: <Result>(
+    //     mapState: (state: easyPeasy.State<ToStoreType<LocalModel>> & freeObj) => Result,
+    //     dependencies?: any[],
+    // ) => Result;
 
 }
 
@@ -143,12 +143,9 @@ return function createLocalHooks<LocalModel  extends object>(holderMapFn : Holde
 
     return {
         useLocalActions: (localMapFn = ((S:any)=>S))=> hooks.useStoreActions((store:any)  =>localMapFn(holderMapFn(store as ToStoreType<StoreModel>))),
-        useLocalActionsLoose: (localMapFn = (S:any)=>S)=> hooks.useStoreActions((store:any)  =>localMapFn(holderMapFn(store as ToStoreType<StoreModel>))),
+        //useLocalActionsLoose: (localMapFn = (S:any)=>S)=> hooks.useStoreActions((store:any)  =>localMapFn(holderMapFn(store as ToStoreType<StoreModel>))),
         useLocalState: (localMapFn = (S:any)=>S)=> hooks.useStoreState((store:any)  =>localMapFn(holderMapFn(store as ToStoreType<StoreModel>))),
-        useLocalStateLoose: (localMapFn = (S:any)=>S)=> hooks.useStoreState((store:any)  =>localMapFn(holderMapFn(store as ToStoreType<StoreModel>))),
+        //useLocalStateLoose: (localMapFn = (S:any)=>S)=> hooks.useStoreState((store:any)  =>localMapFn(holderMapFn(store as ToStoreType<StoreModel>))),
     } as any;
 }
 }
-
-//Peut être faire createLocalHooks et createLocalHooksLoose pour que la holderMapFn soit puisse être loose
-

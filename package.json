@@ -1,6 +1,6 @@
 {
   "name": "easy-peasy-classes",
-  "version": "1.0.10",
+  "version": "1.0.12",
   "description": "easy-peasy enhanced with classes, full typescript type safety, nested store stuctures and model inheritance",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
