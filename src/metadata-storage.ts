@@ -140,7 +140,7 @@ export class MetadataStorage {
                         }
 
                         function getStateClone(){
-                            const modelState = getStoreState()
+                            const modelState = getState()
                             return cloneDeep(modelState)
                         }
                         
@@ -168,9 +168,9 @@ export class MetadataStorage {
                             return cloneDeep(selectedState)
                         }
 
-                        function getStateClone(mapState:any){
-                            const selectedState = mapState(getStoreState())
-                            return cloneDeep(selectedState)
+                        function getStateClone(){
+                            const modelState = getState()
+                            return cloneDeep(modelState)
                         }
 
                         return t.handler.call({ 
