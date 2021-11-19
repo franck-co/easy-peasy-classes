@@ -1,4 +1,5 @@
 import { Action, Thunk, State, Actions } from 'easy-peasy';
+import { ModelBasePure } from './base-class';
 
 export type ComputedType<T> = T & { computed?: undefined };
 
@@ -20,7 +21,7 @@ export type ToStoreType<T extends object> = {
             //     ? T[P] & Function
             //     : T[P] extends Thunk 
             //         ? T[P] & Function
-                    : T[P] extends object 
+                    : T[P] extends ModelBasePure 
                         ? ToStoreType<T[P]>
                         : T[P]
 
