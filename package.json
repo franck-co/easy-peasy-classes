@@ -1,6 +1,6 @@
 {
   "name": "easy-peasy-classes",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "easy-peasy enhanced with classes, full typescript type safety, nested store stuctures and model inheritance",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -18,8 +18,7 @@
     "build": "tsdx build",
     "test": "tsdx test",
     "lint": "tsdx lint",
-    "prepare": "tsdx build",
-    "publish": "npm publish"
+    "prepare": "tsdx build"
   },
   "peerDependencies": {
     "easy-peasy": ">= 3"
